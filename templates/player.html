@@ -1,0 +1,23 @@
+<html>
+<head>
+<script type="text/javascript" src="/static/jwplayer/jwplayer.js"></script>
+</head>
+
+<body>
+<div id="myElement">Loading the player...</div>
+
+<script type="text/javascript">
+    jwplayer("myElement").setup({
+		{% if file %}
+        file: "{{ file }}",
+		{% else %}
+        file: "rtmp://192.168.2.158/live/livestream",
+		{% endif %}
+		height: 480,
+		width: 640,
+		autostart: 'true'
+    });
+</script>
+
+</body>
+</html>

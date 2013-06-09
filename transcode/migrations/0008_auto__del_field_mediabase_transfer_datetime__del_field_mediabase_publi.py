@@ -1,0 +1,118 @@
+# -*- coding: utf-8 -*-
+import datetime
+from south.db import db
+from south.v2 import SchemaMigration
+from django.db import models
+
+
+class Migration(SchemaMigration):
+
+    def forwards(self, orm):
+        # Deleting field 'MediaBase.transfer_datetime'
+        db.delete_column(u'transcode_mediabase', 'transfer_datetime')
+
+        # Deleting field 'MediaBase.publish_datetime'
+        db.delete_column(u'transcode_mediabase', 'publish_datetime')
+
+        # Adding field 'MediaBase.encoded_datetime'
+        db.add_column(u'transcode_mediabase', 'encoded_datetime',
+                      self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True),
+                      keep_default=False)
+
+        # Adding field 'MediaBase.transfered_datetime'
+        db.add_column(u'transcode_mediabase', 'transfered_datetime',
+                      self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True),
+                      keep_default=False)
+
+        # Adding field 'MediaBase.published_datetime'
+        db.add_column(u'transcode_mediabase', 'published_datetime',
+                      self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True),
+                      keep_default=False)
+
+
+    def backwards(self, orm):
+        # Adding field 'MediaBase.transfer_datetime'
+        db.add_column(u'transcode_mediabase', 'transfer_datetime',
+                      self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True),
+                      keep_default=False)
+
+        # Adding field 'MediaBase.publish_datetime'
+        db.add_column(u'transcode_mediabase', 'publish_datetime',
+                      self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True),
+                      keep_default=False)
+
+        # Deleting field 'MediaBase.encoded_datetime'
+        db.delete_column(u'transcode_mediabase', 'encoded_datetime')
+
+        # Deleting field 'MediaBase.transfered_datetime'
+        db.delete_column(u'transcode_mediabase', 'transfered_datetime')
+
+        # Deleting field 'MediaBase.published_datetime'
+        db.delete_column(u'transcode_mediabase', 'published_datetime')
+
+
+    models = {
+        u'auth.group': {
+            'Meta': {'object_name': 'Group'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
+            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
+        },
+        u'auth.permission': {
+            'Meta': {'ordering': "(u'content_type__app_label', u'content_type__model', u'codename')", 'unique_together': "((u'content_type', u'codename'),)", 'object_name': 'Permission'},
+            'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        u'auth.user': {
+            'Meta': {'object_name': 'User'},
+            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
+            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
+            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
+            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
+        },
+        u'contenttypes.contenttype': {
+            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
+            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        },
+        u'transcode.mediabase': {
+            'Meta': {'ordering': "('-upload_datetime',)", 'object_name': 'MediaBase'},
+            'description': ('django.db.models.fields.TextField', [], {'max_length': '1500', 'blank': 'True'}),
+            'encode_status': ('django.db.models.fields.SmallIntegerField', [], {'default': '0'}),
+            'encoded_datetime': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'file': ('transcode.models.CharFileField', [], {'max_length': '255'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'if_encode': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'output_file': ('transcode.models.OutputFileField', [], {'max_length': '255', 'blank': 'True'}),
+            'profile': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'publish_status': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'published_datetime': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'transfer_status': ('django.db.models.fields.SmallIntegerField', [], {'default': '0'}),
+            'transfered_datetime': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'upload_datetime': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'uploader': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
+        u'transcode.video': {
+            'Meta': {'ordering': "('-upload_datetime',)", 'object_name': 'Video', '_ormbases': [u'transcode.MediaBase']},
+            'auto_thumbnail': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            u'mediabase_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['transcode.MediaBase']", 'unique': 'True', 'primary_key': 'True'}),
+            'thumbnail_image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'thumbnail_offset': ('django.db.models.fields.PositiveIntegerField', [], {'default': '4', 'blank': 'True'})
+        }
+    }
+
+    complete_apps = ['transcode']

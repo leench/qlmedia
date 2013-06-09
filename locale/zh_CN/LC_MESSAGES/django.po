@@ -1,0 +1,156 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-09 12:31+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: transcode/admin.py:21
+#, python-format
+msgid "<div id=\"id_file\"></div></p><p class=\"file-upload\">Current: %s</p>"
+msgstr "<div id=\"id_file\"></div></p><p class=\"file-upload\">当前: %s</p>"
+
+#: transcode/conf.py:16 transcode/forms.py:10 transcode/forms.py:16
+msgid "none"
+msgstr ""
+
+#: transcode/conf.py:17
+msgid "queue"
+msgstr ""
+
+#: transcode/conf.py:18 transcode/forms.py:11
+msgid "encoding"
+msgstr ""
+
+#: transcode/conf.py:19 transcode/forms.py:12
+msgid "encoded"
+msgstr ""
+
+#: transcode/conf.py:20
+msgid "failed"
+msgstr ""
+
+#: transcode/forms.py:17
+msgid "uploading"
+msgstr ""
+
+#: transcode/forms.py:18
+msgid "uploaded"
+msgstr ""
+
+#: transcode/models.py:26
+msgid "title"
+msgstr "标题"
+
+#: transcode/models.py:27
+msgid "description"
+msgstr "简介"
+
+#: transcode/models.py:28
+msgid "file"
+msgstr "文件"
+
+#: transcode/models.py:29
+msgid "output file"
+msgstr "输出文件"
+
+#: transcode/models.py:30
+msgid "uploader"
+msgstr "上传者"
+
+#: transcode/models.py:31
+msgid "upload datetime"
+msgstr "上传时间"
+
+#: transcode/models.py:32
+msgid "if encode"
+msgstr "是否转码"
+
+#: transcode/models.py:32
+msgid "If encoding before send to remote server."
+msgstr ""
+
+#: transcode/models.py:33
+msgid "profile"
+msgstr ""
+
+#: transcode/models.py:34
+msgid "encode status"
+msgstr "转码状态"
+
+#: transcode/models.py:34
+msgid "Indicates the status of encode this file."
+msgstr ""
+
+#: transcode/models.py:35
+msgid "encoded datetime"
+msgstr "转码完成时间"
+
+#: transcode/models.py:36
+msgid "transfer status"
+msgstr "传输状态"
+
+#: transcode/models.py:36
+msgid "Indicates the status of upload this file to remote server."
+msgstr ""
+
+#: transcode/models.py:37
+msgid "transfered datetime"
+msgstr "传输完成时间"
+
+#: transcode/models.py:38
+msgid "Indicates that this entry has publish on website."
+msgstr ""
+
+#: transcode/models.py:39
+msgid "published datetime"
+msgstr "发布完成时间"
+
+#: transcode/models.py:43
+msgid "Media File"
+msgstr "媒体文件"
+
+#: transcode/models.py:44
+msgid "Media Files"
+msgstr "媒体文件"
+
+#: transcode/models.py:50
+msgid "thumbnail image"
+msgstr ""
+
+#: transcode/models.py:50
+msgid "Set this to upload your own thumbnail image for a video"
+msgstr ""
+
+#: transcode/models.py:51
+msgid "auto thumbnail"
+msgstr ""
+
+#: transcode/models.py:51
+msgid "Will auto generate the thumbnail from the video file if checked"
+msgstr ""
+
+#: transcode/models.py:52
+msgid "Number of seconds into the video to take the auto thumbnail"
+msgstr ""
+
+#: transcode/models.py:55
+msgid "video"
+msgstr ""
+
+#: transcode/models.py:56
+msgid "videos"
+msgstr ""
