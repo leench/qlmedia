@@ -103,6 +103,7 @@ class VideoAdmin(admin.ModelAdmin):
         js = (
             'js/jquery.min.js',
             'js/encode_progress.js',
+            'js/transfer_progress.js',
             'js/media-list.js',
         )
 

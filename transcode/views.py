@@ -92,22 +92,25 @@ def get_encode_progress(request):
     duration = convtosec(rawDuration)
 
     # get the time in the file that is already encoded
-    rawTime = re.findall(r"time=(.*?) bitrate", content)[-1]
-    etime = convtosec(rawTime)
+    try:
+        rawTime = re.findall(r"time=(.*?) bitrate", content)[-1]
+        etime = convtosec(rawTime)
+    except:
+        etime = 0
 
     progress = etime/duration*100
     if progress >= 100:
         progress = 100.00
     return HttpResponse("%.2f" % progress)
 
-def get_transport_progress(request):
+def get_transfer_progress(request):
     pk = request.GET.get("id", "")
     if pk:
         video = get_object_or_404(Video, pk=pk)
     else:
         raise Http404
 
-    tp = video.transport_path
+    tp = video.transfer_path
     if not os.path.isfile(tp):
         return HttpResponse('error')
 
@@ -115,7 +118,10 @@ def get_transport_progress(request):
     content = trans_file.read()
     trans_file.close()
 
-    percent = re.findall(r" (\d+?)%", content)[-1]
+    try:
+        percent = re.findall(r" (\d+?)%", content)[-1]
+    except:
+        percent = 0
     return HttpResponse(percent)
 
 def convtosec(str):

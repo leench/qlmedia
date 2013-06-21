@@ -9,7 +9,7 @@ VIDEO_PROFILES = {
         'thumbnail_cmd': '',
     },
     'flv': {
-        'encode_cmd': 'ffmpeg -y -i "%(input)s" "%(output)s"',
+        'encode_cmd': 'ffmpeg -y -i "%(input)s" -ab 128 -ar 22050 -acodec libmp3lame -ac 1 -r 29.97 -qscale 6 -s 640x480 "%(output)s"',
         'name': 'Flash video',
         'container': 'flv',
         'thumbnail_cmd': '',

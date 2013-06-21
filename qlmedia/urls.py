@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     url(r'^play/$', 'transcode.views.play'),
     url(r'^get_status/$', 'transcode.views.get_status'),
     url(r'^get_encode_progress/$', 'transcode.views.get_encode_progress'),
-    url(r'^get_transport_progress/$', 'transcode.views.get_transport_progress'),
+    url(r'^get_transfer_progress/$', 'transcode.views.get_transfer_progress'),
     #(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': '/home/leen/media'}),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

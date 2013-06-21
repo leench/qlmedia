@@ -11,6 +11,8 @@ from django.conf import settings
 
 from south.modelsinspector import add_introspection_rules
 
+from celery.task.sets import subtask
+
 from transcode import conf
 
 class CharFileField(models.CharField):
@@ -101,7 +103,7 @@ class Video(MediaBase):
 
     @property
     def datedir(self):
-        return time.strftime('%Y/%m/%d/', time.localtime(time.time()))
+        return self.upload_datetime.strftime('%Y/%m/%d/')
 
     @property
     def upload_cmd(self):
@@ -110,8 +112,8 @@ class Video(MediaBase):
         return str(upload_cmd % args)
 
     @property
-    def transport_path(self):
-        return ''.join(self.output_path.split('.')[0:-1]) + '_transport.txt'
+    def transfer_path(self):
+        return ''.join(self.output_path.split('.')[0:-1]) + '_transfer.txt'
 
     def upload_file(self):
         if self.if_upload:
@@ -122,8 +124,8 @@ class Video(MediaBase):
             mkdir_cmd = shlex.split(str(conf.REMOTE_MKDIR_CMS % {"dir": remote_dir}))
             process = subprocess.call(mkdir_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-            transport_file = open(self.transport_path, "wb")
-            process = subprocess.call(command, stdout=transport_file, stderr=subprocess.PIPE)
+            transfer_file = open(self.transfer_path, "wb")
+            process = subprocess.call(command, stdout=transfer_file, stderr=subprocess.PIPE)
 
         return "123"            
 
@@ -131,10 +133,10 @@ class Video(MediaBase):
         super(Video, self).save(*args, **kwargs)
 
         from transcode.tasks import encode_video
-        if self.encode_status == 0:
-            encode_video.delay(self.id)
         from transcode.tasks import upload_file
-        if self.transfer_status == 0:
-            print self.upload_cmd
-            upload_file.delay(self.id)
+        if self.encode_status == 0:
+            encode_video.delay(self.id, callback=subtask(upload_file))
+        #if self.transfer_status == 0:
+        #    print self.upload_cmd
+        #    upload_file.delay(self.id)
 
