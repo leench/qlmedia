@@ -27,13 +27,14 @@ class MediaBase(models.Model):
     description         = models.TextField(_("description"), max_length=1500, blank=True)
     file                = CharFileField(_('file'), max_length=255)
     output_file         = OutputFileField(_('output file'), max_length=255, blank=True)
+    if_upload           = models.BooleanField(_('if upload'), default=True)
     uploader            = models.ForeignKey(User, verbose_name=_('uploader'), editable=False)
     upload_datetime     = models.DateTimeField(_('upload datetime'), auto_now_add=True, editable=False)
     if_encode           = models.BooleanField(_('if encode'), default=True, help_text=_("If encoding before send to remote server."))
     profile             = models.CharField(_('profile'), max_length=255)
     encode_status       = models.SmallIntegerField(_('encode status'), default=0, help_text=_("Indicates the status of encode this file."))
     encoded_datetime    = models.DateTimeField(_('encoded datetime'), blank=True, null=True, editable=False)
-    transfer_status     = models.SmallIntegerField(_('transfer status'), default=0, editable=False, help_text=_("Indicates the status of upload this file to remote server."))
+    transfer_status     = models.SmallIntegerField(_('transfer status'), default=0, help_text=_("Indicates the status of upload this file to remote server."))
     transfered_datetime = models.DateTimeField(_('transfered datetime'), blank=True, null=True, editable=False)
     publish_status      = models.BooleanField(default=False, editable=False, help_text=_("Indicates that this entry has publish on website."))
     published_datetime  = models.DateTimeField(_('published datetime'), blank=True, null=True, editable=False)
@@ -76,7 +77,7 @@ class Video(MediaBase):
         output_dir = os.path.join(settings.MEDIA_ROOT, "OUTPUT", *s[0:-1])
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
-        output_path = os.path.join(settings.MEDIA_ROOT, output_dir, output_file)
+        output_path = os.path.join(output_dir, output_file)
         return output_path
 
     @property
@@ -98,10 +99,42 @@ class Video(MediaBase):
         if os.path.isfile(self.output_path):
             return self.output_path.split(settings.MEDIA_ROOT)[-1]
 
+    @property
+    def datedir(self):
+        return time.strftime('%Y/%m/%d/', time.localtime(time.time()))
+
+    @property
+    def upload_cmd(self):
+        upload_cmd = conf.TRANSPORT_CMD
+        args = {"path": self.datedir, "file": self.output_path}
+        return str(upload_cmd % args)
+
+    @property
+    def transport_path(self):
+        return ''.join(self.output_path.split('.')[0:-1]) + '_transport.txt'
+
+    def upload_file(self):
+        if self.if_upload:
+            command = shlex.split(self.upload_cmd)
+
+            remote_dir = conf.REMORE_ROOT + self.datedir
+            # make remote dir
+            mkdir_cmd = shlex.split(str(conf.REMOTE_MKDIR_CMS % {"dir": remote_dir}))
+            process = subprocess.call(mkdir_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+            transport_file = open(self.transport_path, "wb")
+            process = subprocess.call(command, stdout=transport_file, stderr=subprocess.PIPE)
+
+        return "123"            
+
     def save(self, *args, **kwargs):
         super(Video, self).save(*args, **kwargs)
 
         from transcode.tasks import encode_video
         if self.encode_status == 0:
             encode_video.delay(self.id)
+        from transcode.tasks import upload_file
+        if self.transfer_status == 0:
+            print self.upload_cmd
+            upload_file.delay(self.id)
 

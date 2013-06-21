@@ -25,3 +25,16 @@ def encode_video(video_id, callback=None):
 
     if callback:
         ubtask(callback).delay(video.id)
+
+@task(max_retries=3)
+def upload_file(video_id, callback=None):
+    video = Video.objects.get(pk=video_id)
+    logger.info("Upload %s" % video)
+    try:
+        file_url = video.upload_file()
+        logger.info("Done upload for %s" % video)
+    except Exception, exc:
+        logger.info("Upload file failed for %s - retrying " % video)
+
+    if callback:
+        ubtask(callback).delay(video.id)

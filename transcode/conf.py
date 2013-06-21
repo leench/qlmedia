@@ -8,7 +8,21 @@ VIDEO_PROFILES = {
         'container': 'mp4',
         'thumbnail_cmd': '',
     },
+    'flv': {
+        'encode_cmd': 'ffmpeg -y -i "%(input)s" "%(output)s"',
+        'name': 'Flash video',
+        'container': 'flv',
+        'thumbnail_cmd': '',
+    }
 }
+
+# rsync or other cms
+# rsync -avP OUT.mp4 -e 'ssh -p 4040' leen@219.151.7.29:/home/leen/tmp/
+TRANSPORT_CMD = 'rsync -avz -e "ssh -p 4040" --progress %(file)s leen@219.151.7.24:/home/leen/mediatmp/%(path)s'
+#TRANSPORT_CMD = 'script -q /dev/stdout -c "scp -P 4040 %(file)s leen@219.151.7.24:/home/leen/mediatmp/%(path)s"'
+
+REMORE_ROOT = '/home/leen/mediatmp/'
+REMOTE_MKDIR_CMS = 'ssh -p 4040 leen@219.151.7.24 mkdir -p %(dir)s'
 
 TEMP_DIR = '/home/leen/media/temp/'
 

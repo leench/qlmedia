@@ -100,6 +100,24 @@ def get_encode_progress(request):
         progress = 100.00
     return HttpResponse("%.2f" % progress)
 
+def get_transport_progress(request):
+    pk = request.GET.get("id", "")
+    if pk:
+        video = get_object_or_404(Video, pk=pk)
+    else:
+        raise Http404
+
+    tp = video.transport_path
+    if not os.path.isfile(tp):
+        return HttpResponse('error')
+
+    trans_file = open(tp, "r")
+    content = trans_file.read()
+    trans_file.close()
+
+    percent = re.findall(r" (\d+?)%", content)[-1]
+    return HttpResponse(percent)
+
 def convtosec(str):
     if str:
         ar = str.split(":")

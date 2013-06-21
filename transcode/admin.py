@@ -50,7 +50,7 @@ class OutputFileWidget(AdminTextInputWidget):
 
 class VideoAdmin(admin.ModelAdmin):
     form = VideoAdminForm
-    list_display = ('title', 'source_size', 'resulting_size', 'uploader', 'profile', 'upload_datetime', 'get_encode_status', 'get_transfer_status', 'get_publish_status')
+    list_display = ('title', 'source_size', 'destination_size', 'preview', 'uploader', 'profile', 'upload_datetime', 'get_encode_status', 'get_transfer_status', 'get_publish_status')
     formfield_overrides = {
         CharFileField: {'widget': AjaxFileWidget},
         OutputFileField: {'widget': OutputFileWidget},
@@ -62,11 +62,18 @@ class VideoAdmin(admin.ModelAdmin):
         else:
             return "-"
 
-    def resulting_size(self, obj):
+    def destination_size(self, obj):
         if os.path.isfile(os.path.join(settings.MEDIA_ROOT, obj.output_file)):
             return "%.2f Mbytes" % (os.path.getsize(os.path.join(settings.MEDIA_ROOT, obj.output_file))/1024.0/1024.0)
         else:
             return "-"
+
+    def preview(self, obj):
+        if obj.output_file != "":
+            return _('<a href="/play/?f=/media/%s" target="_blank">preview</a></p>') % obj.output_file
+        else:
+            return "-"
+    preview.allow_tags = True
 
     def get_encode_status(self, obj):
         """
