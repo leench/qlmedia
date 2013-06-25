@@ -49,6 +49,10 @@ class MediaBase(models.Model):
     def __unicode__(self):
         return u'%s' % self.title
 
+    def __iter__(self):
+        for i in self._meta.get_all_field_names():
+            yield (i, getattr(self, i))
+
 class Video(MediaBase):
     thumbnail_image     = models.ImageField(_('thumbnail image'), upload_to='images/%Y/%m/%d', blank=True, null=True, help_text=_("Set this to upload your own thumbnail image for a video"))
     auto_thumbnail      = models.BooleanField(_('auto thumbnail'), default=False, help_text=_("Will auto generate the thumbnail from the video file if checked"))
@@ -93,7 +97,7 @@ class Video(MediaBase):
             # encode file
             block_file = open(self.block_path, "wb")
             # why output in stderr??
-            process = subprocess.call(command, stdout=subprocess.PIPE, stderr=block_file)
+            process = subprocess.call(command, stdout=block_file, stderr=subprocess.STDOUT)
         else:
             import shutil
             shutil.copyfile(os.path.join(settings.MEDIA_ROOT, self.file), self.output_path)
@@ -139,4 +143,19 @@ class Video(MediaBase):
         #if self.transfer_status == 0:
         #    print self.upload_cmd
         #    upload_file.delay(self.id)
+        """
+        import urllib, urllib2
+        import requests
 
+        url = 'http://219.151.7.28:8000/pubentry/'
+        values = {
+            'a': 1,
+            'b': 2,
+        }
+        headers = {
+            'User-Agent': 'test',
+        }
+        r = requests.post(url, values, headers=headers)
+        print r.text
+        print r.request.headers
+        """

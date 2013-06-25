@@ -5,7 +5,7 @@ $(document).ready(function () {
 		},
 		multiple: false,
 		validation: {
-			allowedExtensions: ['avi', 'flv', 'mp4', 'f4v'],
+			allowedExtensions: ['avi', 'flv', 'mp4', 'f4v', 'mkv'],
 			// sizeLimit: 51200 // 50 kB = 50 * 1024 bytes
 		},
 		text: {

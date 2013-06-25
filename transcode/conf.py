@@ -8,8 +8,8 @@ VIDEO_PROFILES = {
         'container': 'mp4',
         'thumbnail_cmd': '',
     },
-    'flv': {
-        'encode_cmd': 'ffmpeg -y -i "%(input)s" -ab 128 -ar 22050 -acodec libmp3lame -ac 1 -r 29.97 -qscale 6 -s 640x480 "%(output)s"',
+    'flv_w640': {
+        'encode_cmd': 'ffmpeg -y -i "%(input)s" -ab 96 -ar 22050 -acodec libmp3lame -ac 1 -r 29.97 -qscale 2 -vf scale=640:-1 "%(output)s"',
         'name': 'Flash video',
         'container': 'flv',
         'thumbnail_cmd': '',
@@ -37,3 +37,5 @@ ENCODE_STATUS = [
 UPLOAD_STATUS = []
 
 PUBLISH_STATUS = []
+
+PUBLISH_URL = 'http://219.151.7.28:8000/pubentry/'

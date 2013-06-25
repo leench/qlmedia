@@ -17,6 +17,9 @@ var transfer_status = {
 var update_status = function(pk) {
 	try {
 		eval("window.clearInterval(timer_encode_" + pk + ")");
+	} catch (err) {
+	}
+	try {
 		eval("window.clearInterval(timer_transfer_" + pk + ")");
 	} catch (err) {
 	}
@@ -31,9 +34,9 @@ var update_status = function(pk) {
 				eval("window.clearInterval(timer_encode_" + pk + ")");
 			} catch (err) {
 			}
-			$("span#es-" + pk).text(encode_status[data.es]);
+			$("span#es-" + pk).html('<img alt="True" src="/static/admin/img/icon-yes.gif"> '+encode_status[data.es]);
 		} else {
-			$("span#es-" + pk).text(encode_status[data.es]);
+			$("span#es-" + pk).html(encode_status[data.es]);
 		}
 
 		// transfer
@@ -46,12 +49,17 @@ var update_status = function(pk) {
 				eval("window.clearInterval(timer_transfer_" + pk + ")");
 			} catch (err) {
 			}
-			$("span#ts-" + pk).text(transfer_status[data.ts]);
+			$("span#ts-" + pk).html('<img alt="True" src="/static/admin/img/icon-yes.gif"> '+transfer_status[data.ts]);
 		} else {
-			$("span#ts-" + pk).text(transfer_status[data.ts]);
+			$("span#ts-" + pk).html(transfer_status[data.ts]);
 		}
 
-		$("span#ps-" + pk).text(data.ps);
+		// publish
+		if ( data.ps == true ) {
+			$("span#ps-" + pk).html('<img alt="True" src="/static/admin/img/icon-yes.gif"> 已发布');
+		} else {
+			$("span#ps-" + pk).html('<img alt="False" src="/static/admin/img/icon-no.gif"> 未发布');
+		}
 	});
 };
 
